@@ -251,6 +251,29 @@ def run_prediction(model, df_defaults,
     prediksi = max(0.0, raw)
     return prediksi
 
+def run_prediction_monotonic(model, df_defaults,
+                             luas_tanah, luas_bangunan,
+                             kamar_tidur, kamar_mandi,
+                             garasi, carport, kecamatan):
+    lt_grid = sorted({*range(50,  int(luas_tanah)   + 1, 25), int(luas_tanah)})
+    lb_grid = sorted({*range(30,  int(luas_bangunan)+ 1, 25), int(luas_bangunan)})
+    kt_grid = range(1, int(kamar_tidur) + 1)
+    km_grid = range(1, int(kamar_mandi) + 1)
+
+    best = 0.0
+    for lt_i in lt_grid:
+        for lb_i in lb_grid:
+            if lb_i > lt_i:          
+                continue
+            for kt_i in kt_grid:
+                for km_i in km_grid:
+                    p = run_prediction(model, df_defaults,
+                                       lt_i, lb_i, kt_i, km_i,
+                                       garasi, carport, kecamatan)
+                    if p > best:
+                        best = p
+    return best
+
 def render_results(prediksi: float, luas_tanah: int, kecamatan: str,
                    luas_bangunan: int, kamar_tidur: int, kamar_mandi: int,
                    garasi: int, carport: int):
@@ -376,7 +399,7 @@ def main():
     if submitted:
         try:
             with st.spinner("⏳ Memproses prediksi..."):
-                prediksi = run_prediction(
+                prediksi = run_prediction_monotonic(
                     model, df_defaults,
                     luas_tanah, luas_bangunan,
                     kamar_tidur, kamar_mandi,
