@@ -346,16 +346,6 @@ def render_info_expanders():
         6. Riwayat prediksi tersimpan selama sesi aktif dan bisa **diunduh sebagai CSV**.
         """)
 
-    with st.expander("⚠️ Disclaimer"):
-        st.warning(
-            "Hasil prediksi bersifat estimasi berdasarkan pola historis data "
-            "dan tidak menggantikan penilaian profesional. "
-            "Harga aktual properti dapat dipengaruhi oleh banyak faktor yang "
-            "tidak tercakup dalam model ini, seperti kondisi bangunan, "
-            "negosiasi pasar, dan faktor ekonomi makro."
-        )
-
-
 def main():
     inject_custom_css()
     init_session_state()
