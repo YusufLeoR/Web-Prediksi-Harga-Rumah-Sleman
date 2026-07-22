@@ -78,12 +78,10 @@ def inject_custom_css():
     """, unsafe_allow_html=True)
 
 def format_rupiah(x: float) -> str:
-    """Format angka menjadi string Rupiah."""
     return f"Rp {x:,.0f}".replace(",", ".")
 
 
 def kategori_harga(harga: float) -> str:
-    """Menentukan kategori harga properti."""
     if harga < 500_000_000:
         return "🟢 Ekonomis"
     elif harga < 1_500_000_000:
@@ -160,8 +158,6 @@ def render_sidebar():
         st.markdown("---")
         st.markdown("**🤖 Algoritma**")
         st.info("XGBoost")
-        st.markdown("**⚙️ Framework**")
-        st.info("scikit-learn Pipeline")
         st.markdown("**📊 Jumlah Fitur Input Model**")
         st.info("16 Fitur (setelah seleksi & rekayasa)")
         st.markdown("**🗺️ Dataset**")
@@ -203,12 +199,12 @@ def render_input_form(df_defaults: pd.DataFrame):
         col1, col2, col3 = st.columns(3)
         with col1:
             luas_tanah = st.number_input(
-                "Luas Tanah (m²)", min_value=10, max_value=10000,
+                "Luas Tanah (m²)", min_value=10, max_value=1000,
                 value=d_lt, step=1,
                 help="Luas tanah properti dalam meter persegi"
             )
             luas_bangunan = st.number_input(
-                "Luas Bangunan (m²)", min_value=10, max_value=10000,
+                "Luas Bangunan (m²)", min_value=10, max_value=1000,
                 value=d_lb, step=1,
                 help="Luas bangunan properti dalam meter persegi"
             )
@@ -341,18 +337,17 @@ def render_info_expanders():
     with st.expander("🤖 Tentang Model"):
         st.markdown("""
         **Model:** XGBoost  
-        **Framework:** scikit-learn Pipeline  
         **Fitur yang digunakan model:** 16 (setelah seleksi fitur)
 
         Pipeline mencakup preprocessing lengkap:
-        - **SimpleImputer** – mengisi nilai yang hilang
-        - **RobustScaler** – normalisasi fitur numerik
-        - **OneHotEncoder** – encoding fitur kategorikal (kecamatan)
-        - **ColumnTransformer** – menggabungkan semua transformer
+        - **SimpleImputer** mengisi nilai yang hilang
+        - **RobustScaler** normalisasi fitur numerik
+        - **OneHotEncoder** encoding fitur kategorikal (kecamatan)
+        - **ColumnTransformer** menggabungkan semua transformer
 
         **Fitur rekayasa yang dihitung otomatis:**
-        - `area_rooms_interaction` = luas_bangunan × (kamar_tidur + kamar_mandi)
-        - `area_parking_interaction` = luas_tanah × (garasi + carport)
+        - `area_rooms_interaction` = luas_bangunan x (kamar_tidur + kamar_mandi)
+        - `area_parking_interaction` = luas_tanah x (garasi + carport)
         - `land_to_building_ratio` = luas_tanah ÷ luas_bangunan
         - `bathroom_density` = kamar_mandi ÷ luas_bangunan
         - `bedroom_density` = kamar_tidur ÷ luas_bangunan
