@@ -16,6 +16,15 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<style>
+header[data-testid="stHeader"] {display: none;}
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+div[data-testid="stDecoration"] {display: none;}
+</style>
+""", unsafe_allow_html=True)
+
 def inject_custom_css():
     st.markdown("""
     <style>
